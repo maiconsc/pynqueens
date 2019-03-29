@@ -1,5 +1,6 @@
 import chessboard
 import satparser
+import time
 
 
 def horizontal_constraints(n):
@@ -87,6 +88,7 @@ def main():
     n = int(input('- Enter N: '))
     mode = str(input('-- Enter A/a for all solutions or o/O for one solution: ')).lower()[0]
 
+    start = time.time()
     original_assignment = list()
 
     # creation of clauses for horizontal constraints
@@ -111,7 +113,9 @@ def main():
         for i in range(0, len(pos_queens_val)):
             if pos_queens_val[i] > 0:
                 chessboard.place_queen(transform_coordinates_val_to_xy(pos_queens_val[i], n))
+        end = time.time()
         chessboard.print_board()
+        print(f'Execution time: {end - start} seconds.')
     elif mode == 'a':
         solutions = satparser.find_all_solutions(original_assignment)
         while True:
