@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/../nqueens/.idea/nqueens.iml" filepath="$PROJECT_DIR$/../nqueens/.idea/nqueens.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/pynqueens.iml" filepath="$PROJECT_DIR$/.idea/pynqueens.iml" />
     </modules>
   </component>
 </project>
