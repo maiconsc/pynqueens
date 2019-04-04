@@ -3,51 +3,50 @@ with contextlib.redirect_stdout(None):
     import pygame
 
 
-def draw_board(the_board, n):
-    """ Draw a chess board with queens, as determined by the the_board. """
+def draw_board(queen_pos_board, n):
+
+    '''
+    Print a chessboard with the queens placed (GUI).
+    :param queen_pos_board: position of the queens.
+    :param n: board size (nxn) and number of queens.
+    :return: void.
+    '''
 
     pygame.init()
     pygame.display.set_caption(f'Solution for the {n}-Queens Problem')
-    colors = [(209, 139, 71), (255, 206, 158)]    # Set up colors [red, black]
+    colors = [(255, 206, 158), (209, 139, 71)]      # orange and yellow
+    # colors = [(236, 236, 210), (119, 149, 87)]    # dark and soft green
 
-    n = len(the_board)         # This is an NxN chess board.
-    surface_sz = 720           # Proposed physical surface size.
-    sq_sz = surface_sz // n    # sq_sz is length of a square.
-    surface_sz = n * sq_sz     # Adjust to exactly fit n squares.
+    board_size_px = 720     # board size (px)
+    square_size = board_size_px // n
+    board_size_px = n * square_size
 
-    # Create the surface of (width, height), and its window.
-    surface = pygame.display.set_mode((surface_sz, surface_sz))
+    board = pygame.display.set_mode((board_size_px, board_size_px))
 
-    BLACK = (0, 0, 0)
-    ball = pygame.image.load("images/queen.png").convert_alpha()
-    ball = pygame.transform.smoothscale(ball, (int(sq_sz*0.9), int(sq_sz*0.9)))
+    queen_png = pygame.image.load("images/queen.png").convert_alpha()
+    queen_png = pygame.transform.smoothscale(queen_png, (int(square_size*0.9), int(square_size*0.9)))
 
-
-    # Use an extra offset to centre the ball in its square.
-    # If the square is too small, offset becomes negative,
-    #   but it will still be centered 🙂
-    ball_offset = (sq_sz-ball.get_width()) // 2
+    queen_offset = (square_size-queen_png.get_width()) // 2
 
     while True:
 
-        # Look for an event from keyboard, mouse, etc.
-        ev = pygame.event.poll()
-        if ev.type == pygame.QUIT:
+        event = pygame.event.poll()
+        if event.type == pygame.QUIT:
             break;
 
-        # Draw a fresh background (a blank chess board)
-        for row in range(n):           # Draw each row of the board.
-            c_indx = row % 2           # Alternate starting color
-            for col in range(n):       # Run through cols drawing squares
-                the_square = (col*sq_sz, row*sq_sz, sq_sz, sq_sz)
-                surface.fill(colors[c_indx], the_square)
-                # Now flip the color index for the next square
-                c_indx = (c_indx + 1) % 2
+        # draw a fresh chess board
+        for row in range(n):        # draw each row of the board.
+            c_index = row % 2       # alternate colors
+            for col in range(n):
+                square = (col*square_size, row*square_size, square_size, square_size)
+                board.fill(colors[c_index], square)
+                # flip the color index for the next square
+                c_index = (c_index + 1) % 2
 
-        # Now that squares are drawn, draw the queens.
-        for (col, row) in enumerate(the_board):
-          surface.blit(ball,
-                   (col*sq_sz+ball_offset,row*sq_sz+ball_offset))
+        # draw the queens.
+        for (col, row) in enumerate(queen_pos_board):
+          board.blit(queen_png,
+                   (col*square_size+queen_offset,row*square_size+queen_offset))
 
         pygame.display.flip()
 
